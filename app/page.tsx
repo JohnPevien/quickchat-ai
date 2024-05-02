@@ -60,7 +60,7 @@ export default function Chat() {
         <div className="bg-neutral w-full h-10 md:h-20 mb-10"></div>
         <div className="max-w-prose px-8 md:px-0">
           <div className="flex  flex-col items-center justify-start py-2">
-            <header className="mb-10 md:mb-16">
+            <header className="mb-10 ">
               <h1 className="text-3xl font-bold underline leading-relaxed text-center">
                 Japanese Navigator
               </h1>
@@ -78,7 +78,7 @@ export default function Chat() {
 
                 <form onSubmit={handleSubmit} ref={formRef}>
                   <TextField
-                    className="fixed bottom-0 w-full max-w-md p-2 mb-8 border border-gray-300 rounded shadow-xl"
+                    className="w-full max-w-md p-2 mb-8 border border-gray-300 rounded shadow-xl"
                     value={input}
                     placeholder="Say something..."
                     onChange={handleInputChange}
