@@ -173,8 +173,7 @@ export default function Chat() {
           </div>
           <div className="flex flex-row gap-3">
             <a
-              href="https://github.com/JohnPevien/rephraser
-            "
+              href="https://github.com/JohnPevien/quickchat-ai"
               rel="noreferrer"
             >
               <AiFillGithub size={"2em"} />
