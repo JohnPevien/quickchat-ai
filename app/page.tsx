@@ -55,12 +55,12 @@ export default function Chat() {
         />
         <div className="bg-neutral w-full h-10 md:h-20 mb-10"></div>
         <div className="max-w-prose px-8 md:px-0">
-          <div className="flex  flex-col items-center justify-start py-2">
+          <div className="flex  flex-col items-center justify-start py-2 min-w-96">
             <header className="mb-10 ">
               <h1 className="text-3xl font-bold underline leading-relaxed text-center">
-                Japanese Navigator
+                {(process.env.PAGE_TITLE as string) || "Quikchat"}
               </h1>
-              {/* <p>A rephraser and grammar checker app powered by OpenAI API.</p> */}
+              <p>{(process.env.PAGE_DESCRIPTION as string) || ""}</p>
             </header>
             <div className="w-full flex flex-col gap-5">
               <div>
