@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useRef } from "react";
 import { useChat } from "ai/react";
 import Head from "next/head";
 import { Toaster } from "react-hot-toast";
@@ -8,19 +8,15 @@ import { Button, Select, TextField } from "@/components/form";
 import { AiFillGithub, AiOutlineTwitter } from "react-icons/ai";
 
 export default function Chat() {
-  const onFormFinish = () => {
-    setLoading(false);
-  };
-  const { messages, input, handleInputChange, handleSubmit } = useChat({
-    onFinish: onFormFinish,
-  });
-  const [loading, setLoading] = useState(false);
+  const { messages, input, handleInputChange, handleSubmit, isLoading } =
+    useChat({
+      api: "/api/chat",
+    });
   const formRef = useRef<HTMLFormElement>(null);
 
   const submitForm = () => {
     if (formRef.current) {
       formRef.current.dispatchEvent(new Event("submit", { cancelable: true }));
-      setLoading(true);
     }
   };
 
@@ -85,27 +81,10 @@ export default function Chat() {
                   />
                 </form>
               </div>
-              {/* <div className="flex flex-col sm:flex-row justify-between gap-5 items-center">
-                <p>Select tone:</p>
-                <Select
-                  className="rounded w-full max-w-full sm:max-w-xs"
-                  onChange={(e) => setVibe(e.target.value)}
-                  value={vibe}
-                  options={[
-                    "Professional",
-                    "Conversational",
-                    "Humorous",
-                    "Empatic",
-                    "Academic",
-                    "Simple",
-                    "Creative",
-                  ]}
-                />
-              </div> */}
 
               <Button
                 onClick={submitForm}
-                disabled={loading || !input || input?.length < 7}
+                disabled={isLoading || !input || input?.length < 3}
               >
                 Send
               </Button>
