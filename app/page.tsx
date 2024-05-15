@@ -4,7 +4,7 @@ import { useRef } from "react";
 import { useChat } from "ai/react";
 import Head from "next/head";
 import { Toaster } from "react-hot-toast";
-import { Button, Select, TextField } from "@/components/form";
+import { Button, TextField } from "@/components/form";
 import { AiFillGithub, AiOutlineTwitter } from "react-icons/ai";
 
 export default function Chat() {
