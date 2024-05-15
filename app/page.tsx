@@ -1,48 +1,18 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useRef } from "react";
 import { useChat } from "ai/react";
 import Head from "next/head";
 import { Toaster } from "react-hot-toast";
-import { Button, Select, TextField } from "@/components/form";
+import { Button, TextField } from "@/components/form";
 import { AiFillGithub, AiOutlineTwitter } from "react-icons/ai";
 
 export default function Chat() {
-  const onFormFinish = () => {
-    setLoading(false);
-  };
-  const { messages, input, handleInputChange, handleSubmit } = useChat({
-    onFinish: onFormFinish,
-  });
-  const [loading, setLoading] = useState(false);
+  const { messages, input, handleInputChange, handleSubmit, isLoading } =
+    useChat({
+      api: "/api/chat",
+    });
   const formRef = useRef<HTMLFormElement>(null);
-
-  const submitForm = () => {
-    if (formRef.current) {
-      formRef.current.dispatchEvent(new Event("submit", { cancelable: true }));
-      setLoading(true);
-    }
-  };
-
-  // return (
-  //   <div className="flex flex-col w-full max-w-md py-24 mx-auto stretch">
-  //     {messages.map(m => (
-  //       <div key={m.id} className="whitespace-pre-wrap">
-  //         {m.role === 'user' ? 'User: ' : 'AI: '}
-  //         {m.content}
-  //       </div>
-  //     ))}
-
-  //     <form onSubmit={handleSubmit}>
-  //       <input
-  //         className="fixed bottom-0 w-full max-w-md p-2 mb-8 border border-gray-300 rounded shadow-xl"
-  //         value={input}
-  //         placeholder="Say something..."
-  //         onChange={handleInputChange}
-  //       />
-  //     </form>
-  //   </div>
-  // );
 
   return (
     <>
@@ -59,94 +29,45 @@ export default function Chat() {
         />
         <div className="bg-neutral w-full h-10 md:h-20 mb-10"></div>
         <div className="max-w-prose px-8 md:px-0">
-          <div className="flex  flex-col items-center justify-start py-2">
+          <div className="flex  flex-col items-center justify-start py-2 min-w-96">
             <header className="mb-10 ">
               <h1 className="text-3xl font-bold underline leading-relaxed text-center">
-                Japanese Navigator
+                {(process.env.PAGE_TITLE as string) || "Quikchat"}
               </h1>
-              {/* <p>A rephraser and grammar checker app powered by OpenAI API.</p> */}
+              <p>{(process.env.PAGE_DESCRIPTION as string) || ""}</p>
             </header>
-            <div className="w-full flex flex-col gap-5">
-              <div>
-                {/* <TextField
-                  className="rounded border-2 border-neutral w-full max-w-full"
-                  onChange={(e) => {
-                    setSentence(e.target.value);
-                  }}
-                  value={sentence}
-                /> */}
-
-                <form onSubmit={handleSubmit} ref={formRef}>
-                  <TextField
-                    className="w-full max-w-md p-2 mb-8 border border-gray-300 rounded shadow-xl"
-                    value={input}
-                    placeholder="Say something..."
-                    onChange={handleInputChange}
-                  />
-                </form>
-              </div>
-              {/* <div className="flex flex-col sm:flex-row justify-between gap-5 items-center">
-                <p>Select tone:</p>
-                <Select
-                  className="rounded w-full max-w-full sm:max-w-xs"
-                  onChange={(e) => setVibe(e.target.value)}
-                  value={vibe}
-                  options={[
-                    "Professional",
-                    "Conversational",
-                    "Humorous",
-                    "Empatic",
-                    "Academic",
-                    "Simple",
-                    "Creative",
-                  ]}
+            <div className="sm:max-w-[500px] max-w-[300px] w-full flex flex-col items-center gap-5">
+              <form onSubmit={handleSubmit} ref={formRef} className="w-full">
+                <TextField
+                  className="w-full max-w-md p-2 mb-8 border border-gray-300 rounded shadow-xl"
+                  value={input}
+                  placeholder="Say something..."
+                  onChange={handleInputChange}
                 />
-              </div> */}
-
-              <Button
-                onClick={submitForm}
-                disabled={loading || !input || input?.length < 7}
-              >
-                Send
-              </Button>
+                <Button
+                  disabled={isLoading || !input || input?.length < 3}
+                  type="submit"
+                >
+                  Send
+                </Button>
+              </form>
 
               <p className="text-xs text-center"></p>
             </div>
 
-            <div className="w-full mt-10">
-              {messages && (
+            <div className="w-full mt-10 mb-10">
+              {messages && messages?.length > 0 && (
                 <>
                   <hr />
-                  {/* <h3 className="text-center text-xl mt-3 mb-5 font-semibold">
-                    Rephrased Sentences
-                  </h3> */}
+                  <h3 className="text-left text-xl mt-3 mb-5 font-semibold">
+                    Result:
+                  </h3>
                   {messages.map((m) => (
-                    <div key={m.id} className="whitespace-pre-wrap">
+                    <div key={m.id} className="whitespace-pre-wrap mb-2">
                       {m.role === "user" ? "User: " : "AI: "}
                       {m.content}
                     </div>
                   ))}
-                  {/* {rephrasedSentences.split("\n").map((sentence, index) => {
-                    if (sentence.length < 7) return;
-                    sentence = sentence
-                      .replace("- ", "")
-                      .replace(/^\d+\.\s/gm, "")
-                      .replace(/"/g, "")
-                      .trim();
-                    return (
-                      <Card
-                        text={sentence}
-                        key={index}
-                        className="text-center w-full mb-5"
-                        onClick={() => {
-                          navigator.clipboard.writeText(sentence);
-                          toast("Sentence have been copied to clipboard", {
-                            icon: "✂️",
-                          });
-                        }}
-                      />
-                    );
-                  })} */}
                 </>
               )}
             </div>
