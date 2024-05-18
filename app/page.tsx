@@ -13,11 +13,14 @@ export default function Chat() {
       api: "/api/chat",
     });
   const formRef = useRef<HTMLFormElement>(null);
+  const title = (process.env.PAGE_TITLE as string) || "Quikchat";
+  const description = (process.env.PAGE_DESCRIPTION as string) || "";
 
   return (
     <>
       <Head>
-        <title>{(process.env.PAGE_TITLE as string) || "Quikchat"}</title>
+        {title && <title>{title}</title>}
+        {description && <meta name="description" content={description} />}
       </Head>
       <main
         className={`flex  flex-col items-center min-h-[90vh] justify-start`}
@@ -31,10 +34,14 @@ export default function Chat() {
         <div className="max-w-prose px-8 md:px-0">
           <div className="flex  flex-col items-center justify-start py-2 min-w-96">
             <header className="mb-10 ">
-              <h1 className="text-3xl font-bold underline leading-relaxed text-center">
-                {(process.env.PAGE_TITLE as string) || "Quikchat"}
-              </h1>
-              <p>{(process.env.PAGE_DESCRIPTION as string) || ""}</p>
+              {title && (
+                <h1 className="text-3xl font-bold underline leading-relaxed text-center">
+                  {(process.env.PAGE_TITLE as string) || "Quikchat"}
+                </h1>
+              )}
+              {description && (
+                <p>{(process.env.PAGE_DESCRIPTION as string) || ""}</p>
+              )}
             </header>
             <div className="sm:max-w-[500px] max-w-[300px] w-full flex flex-col items-center gap-5">
               <form onSubmit={handleSubmit} ref={formRef} className="w-full">
