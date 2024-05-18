@@ -17,7 +17,7 @@ export default function Chat() {
   return (
     <>
       <Head>
-        <title>Rephraser</title>
+        <title>{(process.env.PAGE_TITLE as string) || "Quikchat"}</title>
       </Head>
       <main
         className={`flex  flex-col items-center min-h-[90vh] justify-start`}
@@ -44,6 +44,7 @@ export default function Chat() {
                   placeholder="Say something..."
                   onChange={handleInputChange}
                 />
+
                 <Button
                   disabled={isLoading || !input || input?.length < 3}
                   type="submit"
