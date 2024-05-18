@@ -27,7 +27,7 @@ export default function Chat() {
           reverseOrder={false}
           toastOptions={{ duration: 2000 }}
         />
-        <div className="bg-neutral w-full h-10 md:h-20 mb-10"></div>
+        <div className="bg-transparent w-full h-10 md:h-20 mb-10"></div>
         <div className="max-w-prose px-8 md:px-0">
           <div className="flex  flex-col items-center justify-start py-2 min-w-96">
             <header className="mb-10 ">
