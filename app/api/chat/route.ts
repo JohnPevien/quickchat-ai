@@ -7,6 +7,10 @@ const openai = new OpenAI({
   baseURL: process.env.GROQ_API_BASE_URL || "https://api.groq.com/openai/v1",
 });
 
+const defaultPrompt =
+  (process.env.DEFAULT_SYSTEM_PROMPT as string) ||
+  "You are a helpful assistant that assist users by providing information, answering questions, generating text content, and offering support across a wide range of topics. Your goal is to be informative, helpful, and engaging, adapting to the user's needs and preferences.";
+
 // IMPORTANT! Set the runtime to edge
 export const runtime = "edge";
 
