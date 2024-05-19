@@ -1,7 +1,6 @@
 import OpenAI from "openai";
 import { OpenAIStream, StreamingTextResponse } from "ai";
 
-// Create an OpenAI API client (that's edge friendly!)
 const openai = new OpenAI({
   apiKey: process.env.GROQ_API_KEY || "",
   baseURL: process.env.GROQ_API_BASE_URL || "https://api.groq.com/openai/v1",
@@ -16,6 +15,10 @@ export const runtime = "edge";
 
 export async function POST(req: Request) {
   let { messages } = await req.json();
+
+  if (!messages || messages.length === 0) {
+    messages = [{ role: "system", content: defaultPrompt }];
+  }
 
   // Ask Groq for a streaming chat completion given the prompt
   const response = await openai.chat.completions.create({
