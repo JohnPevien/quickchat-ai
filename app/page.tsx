@@ -6,6 +6,7 @@ import Head from "next/head";
 import { Toaster } from "react-hot-toast";
 import { Button, TextField } from "@/components/form";
 import { AiFillGithub, AiOutlineTwitter } from "react-icons/ai";
+import { PAGE_TITLE, PAGE_DESCRIPTION } from "@/config/constants";
 
 export default function Chat() {
   const { messages, input, handleInputChange, handleSubmit, isLoading } =
@@ -13,8 +14,8 @@ export default function Chat() {
       api: "/api/chat",
     });
   const formRef = useRef<HTMLFormElement>(null);
-  const title = (process.env.PAGE_TITLE as string) || "Quikchat";
-  const description = (process.env.PAGE_DESCRIPTION as string) || "";
+  const title = PAGE_TITLE;
+  const description = PAGE_DESCRIPTION;
 
   return (
     <>
