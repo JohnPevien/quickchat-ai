@@ -1,3 +1,11 @@
+## Description
+
+**QuikChat** is a simple interface for interacting with AI APIs. It provides easy integration and communication with various AI models
+
+## Work in Progress
+- [ ] Dark mode
+- [ ] Handle other AI models
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
