@@ -11,7 +11,7 @@ export default function TextField({
   return (
     <textarea
       placeholder={placeholder}
-      className={`textarea textarea-bordered textarea-md  ${className}`}
+      className={`textarea textarea-bordered textarea-md dark:text-gray-900  ${className}`}
       onChange={onChange}
       value={value}
     />
