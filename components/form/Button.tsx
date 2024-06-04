@@ -11,7 +11,7 @@ export default function Button({
 }: Props) {
   return (
     <button
-      className="btn w-full dark:text-white"
+      className="btn w-full dark:text-white dark:bg-blue-700 bg-blue-500 p-2 text-white"
       onClick={onClick}
       disabled={disabled}
       {...rest}
