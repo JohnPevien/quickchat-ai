@@ -5,6 +5,7 @@
 ## Work in Progress
 - [ ] Dark mode
 - [ ] Handle other AI models
+- [ ] List AI models available once API key is added
 
 ## Getting Started
 
