@@ -11,7 +11,14 @@ export default function TextField({
 }: Props) {
   return (
     <select
-      className={`select select-bordered w-full ${className}`}
+      className={`
+        bg-background border border-border text-foreground
+        rounded-md px-3 py-2 text-sm
+        focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background
+        hover:border-muted-foreground
+        transition-colors
+        ${className}
+      `}
       onChange={onChange}
       value={value}
     >
@@ -19,7 +26,7 @@ export default function TextField({
         Select an option
       </option>
       {options.map((option, index) => (
-        <option value={option} key={index}>
+        <option value={option} key={index} className="bg-background text-foreground">
           {option.charAt(0).toUpperCase() + option.slice(1)}
         </option>
       ))}
