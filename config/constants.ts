@@ -1,5 +1,5 @@
 // Application display configuration
-export const PAGE_TITLE = (process.env.PAGE_TITLE as string) || "QuickChat";
+export const PAGE_TITLE = (process.env.PAGE_TITLE as string) || "QuickChat AI";
 export const PAGE_DESCRIPTION =
     (process.env.PAGE_DESCRIPTION as string) || "AI Chat Application";
 
