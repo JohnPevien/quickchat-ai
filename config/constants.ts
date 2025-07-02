@@ -6,7 +6,7 @@ export const PAGE_DESCRIPTION =
 
 // System prompt configuration
 export const SYSTEM_PROMPT =
-    (process.env.DEFAULT_SYSTEM_PROMPT as string) ||
+    (process.env.NEXT_PUBLIC_DEFAULT_SYSTEM_PROMPT as string) ||
     "You are a helpful assistant that assists users by providing information, answering questions, generating text content, and offering support across a wide range of topics. Your goal is to be informative, helpful, and engaging, adapting to the user's needs and preferences.";
 
 // AI Provider configuration
