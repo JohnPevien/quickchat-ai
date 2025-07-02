@@ -5,7 +5,6 @@ import { NextRequest } from "next/server";
 import { SYSTEM_PROMPT } from "@/config/constants";
 
 export const runtime = "edge";
-export const maxDuration = 60;
 
 export async function POST(request: NextRequest) {
     try {
