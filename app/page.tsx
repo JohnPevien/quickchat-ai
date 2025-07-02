@@ -12,12 +12,14 @@ import { useTheme } from "next-themes";
 export default function Chat() {
     const [selectedProvider, setSelectedProvider] = useState<string>("openai");
 
-    const { messages, input, handleInputChange, handleSubmit } = useChat({
-        api: "/api/chat",
-        body: {
-            provider: selectedProvider,
-        },
-    });
+    const { messages, input, handleInputChange, handleSubmit, status } =
+        useChat({
+            api: "/api/chat",
+            body: {
+                provider: selectedProvider,
+            },
+        });
+    const isLoading = status === "submitted" || status === "streaming";
     const formRef = useRef<HTMLFormElement>(null);
     const title = PAGE_TITLE;
     const description = PAGE_DESCRIPTION;
@@ -90,7 +92,9 @@ export default function Chat() {
                                 />
 
                                 <Button
-                                    disabled={!input || input?.length < 3}
+                                    disabled={
+                                        !input || input?.length < 3 || isLoading
+                                    }
                                     type="submit"
                                 >
                                     Send
