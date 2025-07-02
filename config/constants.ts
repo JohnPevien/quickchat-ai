@@ -11,7 +11,7 @@ export const SYSTEM_PROMPT =
 
 // AI Provider configuration
 export const DEFAULT_AI_PROVIDER =
-    (process.env.DEFAULT_AI_PROVIDER as string) || "openai";
+    (process.env.NEXT_PUBLIC_DEFAULT_AI_PROVIDER as string) || "openai";
 
 // Rate limiting configuration
 export const RATE_LIMIT_CONFIG = {
@@ -42,11 +42,11 @@ export function validateEnvironment() {
 
     // Validate default provider setting
     if (
-        process.env.DEFAULT_AI_PROVIDER &&
-        !["openai", "deepseek"].includes(process.env.DEFAULT_AI_PROVIDER)
+        process.env.NEXT_PUBLIC_DEFAULT_AI_PROVIDER &&
+        !["openai", "deepseek"].includes(process.env.NEXT_PUBLIC_DEFAULT_AI_PROVIDER)
     ) {
         warnings.push(
-            `Invalid DEFAULT_AI_PROVIDER: ${process.env.DEFAULT_AI_PROVIDER}. Should be 'openai' or 'deepseek'.`
+            `Invalid DEFAULT_AI_PROVIDER: ${process.env.NEXT_PUBLIC_DEFAULT_AI_PROVIDER}. Should be 'openai' or 'deepseek'.`
         );
     }
 

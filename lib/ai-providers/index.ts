@@ -23,7 +23,7 @@ export function getAIProvider(
     try {
         if (providerName === "default") {
             const defaultProvider =
-                (process.env.DEFAULT_AI_PROVIDER as AISupportedProvider) ||
+                (process.env.NEXT_PUBLIC_DEFAULT_AI_PROVIDER as AISupportedProvider) ||
                 "openai";
 
             return getAIProvider(defaultProvider);
@@ -57,7 +57,7 @@ export function getProviderDefaultModel(
 ): string {
     if (providerName === "default") {
         const defaultProvider =
-            (process.env.DEFAULT_AI_PROVIDER as AISupportedProvider) ||
+            (process.env.NEXT_PUBLIC_DEFAULT_AI_PROVIDER as AISupportedProvider) ||
             "openai";
 
         return getProviderDefaultModel(defaultProvider);
