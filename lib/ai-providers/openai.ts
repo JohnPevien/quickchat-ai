@@ -36,10 +36,8 @@ export function createOpenAIProvider(): LanguageModel {
         compatibility: "strict",
     });
 
-    return openai(config.model, {
-        structuredOutputs: true,
-        parallelToolCalls: true,
-    });
+    return openai(config.model);
+
 }
 
 export function getOpenAIModelInfo() {

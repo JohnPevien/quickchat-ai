@@ -1,5 +1,5 @@
 import { streamText, convertToCoreMessages } from "ai";
-import { createOpenAI } from "@ai-sdk/openai";
+import { getAIProvider, AISupportedProvider } from "@/lib/ai-providers";
 import { NextRequest } from "next/server";
 
 import { SYSTEM_PROMPT } from "@/config/constants";
@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        if (!process.env.OPENAI_API_KEY) {
+        if (provider === "openai" && !process.env.OPENAI_API_KEY) {
             console.error("OPENAI_API_KEY is not set in environment variables");
             return new Response(
                 JSON.stringify({ error: "OpenAI API key not configured" }),
@@ -28,14 +28,40 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        const openai = createOpenAI({
-            apiKey: process.env.OPENAI_API_KEY,
-        });
+        if (provider === "deepseek" && !process.env.DEEPSEEK_API_KEY) {
+            console.error("DEEPSEEK_API_KEY is not set in environment variables");
+            return new Response(
+                JSON.stringify({ error: "DeepSeek API key not configured" }),
+                { status: 500, headers: { "Content-Type": "application/json" } }
+            );
+        }
 
         const coreMessages = convertToCoreMessages(messages);
 
+        // Configure AI provider dynamically
+        const providerConfig = getAIProvider(provider as AISupportedProvider);
+
+        if (!providerConfig) {
+            console.error(`Unsupported or misconfigured AI provider: ${provider}`);
+            return new Response(
+                JSON.stringify({ error: `Invalid AI provider: ${provider}` }),
+                { status: 400, headers: { "Content-Type": "application/json" } }
+            );
+        }
+
+        // Logging to verify DeepSeek usage
+        console.log(
+            `Using provider: ${providerConfig.info.provider}, model: ${providerConfig.info.model}`
+        );
+
+        if (providerConfig.info.provider === "deepseek") {
+            console.log("DeepSeek provider initialized successfully", {
+                baseURL: providerConfig.info.baseURL,
+            });
+        }
+
         const result = streamText({
-            model: openai("gpt-4o-mini"),
+            model: providerConfig.model,
             system: SYSTEM_PROMPT,
             messages: coreMessages,
             temperature: 0.7,
