@@ -1,4 +1,4 @@
-import { createOpenAI } from "@ai-sdk/openai";
+import { createDeepSeek } from "@ai-sdk/deepseek";
 import { LanguageModel } from "ai";
 
 interface DeepSeekConfig {
@@ -24,16 +24,12 @@ export function createDeepSeekProvider(): LanguageModel {
         baseURL: process.env.DEEPSEEK_API_BASE_URL || DEFAULT_DEEPSEEK_BASE_URL,
     };
 
-    const deepseek = createOpenAI({
+    const deepseek = createDeepSeek({
         apiKey: config.apiKey,
         baseURL: config.baseURL,
-        compatibility: "compatible",
     });
 
-    return deepseek(config.model, {
-        structuredOutputs: false,
-        parallelToolCalls: false,
-    });
+    return deepseek(config.model);
 }
 
 export function getDeepSeekModelInfo() {
