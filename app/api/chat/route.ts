@@ -70,7 +70,14 @@ export async function POST(request: NextRequest) {
             maxTokens: 2048,
         });
 
-        return result.toDataStreamResponse();
+        const streamResponse = result.toDataStreamResponse();
+        return new Response(streamResponse.body, {
+            status: streamResponse.status,
+            headers: {
+                ...streamResponse.headers,
+                ...CORS_HEADERS,
+            },
+        });
     } catch (error) {
         console.error("Chat API Error:", error);
 
