@@ -155,8 +155,7 @@ export default function Chat() {
                             <AiFillGithub size={"2em"} />
                         </a>
                         <a
-                            href="https://twitter.com/JohnPevien
-            "
+                            href="https://twitter.com/JohnPevien"
                             rel="noreferrer"
                             className="text-muted-foreground hover:text-foreground transition-colors"
                         >
