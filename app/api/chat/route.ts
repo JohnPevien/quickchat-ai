@@ -4,6 +4,21 @@ import { NextRequest } from "next/server";
 
 import { SYSTEM_PROMPT } from "@/config/constants";
 
+const CORS_HEADERS = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+};
+
+const jsonResponse = (body: Record<string, unknown>, status: number) =>
+    new Response(JSON.stringify(body), {
+        status,
+        headers: {
+            "Content-Type": "application/json",
+            ...CORS_HEADERS,
+        },
+    });
+
 export const runtime = "edge";
 
 export async function POST(request: NextRequest) {
@@ -13,26 +28,17 @@ export async function POST(request: NextRequest) {
 
         if (!messages || !Array.isArray(messages)) {
             console.error("Invalid messages array provided");
-            return new Response(
-                JSON.stringify({ error: "Messages array is required" }),
-                { status: 400, headers: { "Content-Type": "application/json" } }
-            );
+            return jsonResponse({ error: "Messages array is required" }, 400);
         }
 
         if (provider === "openai" && !process.env.OPENAI_API_KEY) {
             console.error("OPENAI_API_KEY is not set in environment variables");
-            return new Response(
-                JSON.stringify({ error: "OpenAI API key not configured" }),
-                { status: 500, headers: { "Content-Type": "application/json" } }
-            );
+            return jsonResponse({ error: "OpenAI API key not configured" }, 500);
         }
 
         if (provider === "deepseek" && !process.env.DEEPSEEK_API_KEY) {
             console.error("DEEPSEEK_API_KEY is not set in environment variables");
-            return new Response(
-                JSON.stringify({ error: "DeepSeek API key not configured" }),
-                { status: 500, headers: { "Content-Type": "application/json" } }
-            );
+            return jsonResponse({ error: "DeepSeek API key not configured" }, 500);
         }
 
         const coreMessages = convertToCoreMessages(messages);
@@ -42,10 +48,7 @@ export async function POST(request: NextRequest) {
 
         if (!providerConfig) {
             console.error(`Unsupported or misconfigured AI provider: ${provider}`);
-            return new Response(
-                JSON.stringify({ error: `Invalid AI provider: ${provider}` }),
-                { status: 400, headers: { "Content-Type": "application/json" } }
-            );
+            return jsonResponse({ error: `Invalid AI provider: ${provider}` }, 400);
         }
 
         // Logging to verify DeepSeek usage
@@ -71,12 +74,12 @@ export async function POST(request: NextRequest) {
     } catch (error) {
         console.error("Chat API Error:", error);
 
-        return new Response(
-            JSON.stringify({
+        return jsonResponse(
+            {
                 error: "Internal server error",
                 details: error instanceof Error ? error.message : String(error),
-            }),
-            { status: 500, headers: { "Content-Type": "application/json" } }
+            },
+            500
         );
     }
 }
@@ -84,10 +87,6 @@ export async function POST(request: NextRequest) {
 export async function OPTIONS() {
     return new Response(null, {
         status: 200,
-        headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "POST, OPTIONS",
-            "Access-Control-Allow-Headers": "Content-Type, Authorization",
-        },
+        headers: CORS_HEADERS,
     });
 }
