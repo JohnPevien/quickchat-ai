@@ -1,7 +1,8 @@
 // Application display configuration
-export const PAGE_TITLE = (process.env.PAGE_TITLE as string) || "QuickChat AI";
+export const PAGE_TITLE =
+    process.env.NEXT_PUBLIC_PAGE_TITLE ?? "QuickChat AI";
 export const PAGE_DESCRIPTION =
-    (process.env.PAGE_DESCRIPTION as string) || "AI Chat Application";
+    process.env.NEXT_PUBLIC_PAGE_DESCRIPTION ?? "AI Chat Application";
 
 // System prompt configuration
 export const SYSTEM_PROMPT =

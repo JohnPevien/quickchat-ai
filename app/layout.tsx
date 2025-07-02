@@ -1,13 +1,13 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "next-themes";
+import { PAGE_TITLE, PAGE_DESCRIPTION } from "@/config/constants";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-    title: (process.env.PAGE_TITLE as string) || "QuickChat AI",
-    description:
-        (process.env.PAGE_DESCRIPTION as string) || "AI Chat Application",
+    title: PAGE_TITLE,
+    description: PAGE_DESCRIPTION,
 };
 
 export default function RootLayout({
