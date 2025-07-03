@@ -3,9 +3,7 @@
 import { useRef, useState } from "react";
 import { useChat } from "@ai-sdk/react";
 import Head from "next/head";
-import { Toaster } from "react-hot-toast";
 import { Button, TextField, Select } from "@/components/form";
-import { AiFillGithub, AiOutlineTwitter } from "react-icons/ai";
 import { PAGE_TITLE, PAGE_DESCRIPTION } from "@/config/constants";
 import { useTheme } from "next-themes";
 
@@ -34,18 +32,6 @@ export default function Chat() {
                 )}
             </Head>
             <main className="min-h-screen bg-background text-foreground flex flex-col items-center justify-start">
-                <Toaster
-                    position="top-center"
-                    reverseOrder={false}
-                    toastOptions={{
-                        duration: 2000,
-                        style: {
-                            background: "hsl(var(--background))",
-                            color: "hsl(var(--foreground))",
-                            border: "1px solid hsl(var(--border))",
-                        },
-                    }}
-                />
                 <div className="w-full h-10 md:h-20 mb-10"></div>
                 <div className="max-w-prose px-8 md:px-0">
                     <div className="flex  flex-col items-center justify-start py-2 min-w-96">
@@ -65,7 +51,7 @@ export default function Chat() {
                                     setSelectedProvider(e.target.value)
                                 }
                                 id="provider"
-                                options={["openai", "deepseek"]}
+                                options={["openai", "deepseek", "deepseek-r1"]}
                                 className="min-w-32"
                             />
                         </div>
@@ -124,41 +110,6 @@ export default function Chat() {
                     </div>
                 </div>
             </main>
-            <footer className="container mx-auto max-w-prose border-t border-border pt-8 mt-16">
-                <p className="text-center text-sm text-muted-foreground mb-6">
-                    This app uses AI and may produce inaccurate results
-                </p>
-                <div className="flex flex-row justify-between items-center mb-8">
-                    <div>
-                        <p className="text-sm text-muted-foreground">
-                            Powered by{" "}
-                            <a
-                                href="https://vercel.com/"
-                                className="underline hover:text-foreground transition-colors"
-                                rel="noreferrer"
-                            >
-                                Vercel
-                            </a>
-                        </p>
-                    </div>
-                    <div className="flex flex-row gap-3">
-                        <a
-                            href="https://github.com/JohnPevien/quickchat-ai"
-                            rel="noreferrer"
-                            className="text-muted-foreground hover:text-foreground transition-colors"
-                        >
-                            <AiFillGithub size={"2em"} />
-                        </a>
-                        <a
-                            href="https://twitter.com/JohnPevien"
-                            rel="noreferrer"
-                            className="text-muted-foreground hover:text-foreground transition-colors"
-                        >
-                            <AiOutlineTwitter size={"2em"} />
-                        </a>
-                    </div>
-                </div>
-            </footer>
         </>
     );
 }
