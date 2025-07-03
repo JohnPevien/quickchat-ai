@@ -27,10 +27,10 @@ export default function Select({
             <option disabled value="">
                 Select an option
             </option>
-            {options.map((option, index) => (
+            {options.map((option) => (
                 <option
                     value={option}
-                    key={index}
+                    key={option}
                     className="bg-background text-foreground"
                 >
                     {option.charAt(0).toUpperCase() + option.slice(1)}
