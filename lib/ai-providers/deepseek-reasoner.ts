@@ -1,23 +1,19 @@
 import { createDeepSeek } from "@ai-sdk/deepseek";
 import { extractReasoningMiddleware, wrapLanguageModel, LanguageModel } from "ai";
 
-interface DeepSeekR1Config {
+interface DeepSeekReasonerConfig {
     apiKey: string;
     model: string;
 }
 
-// Defaults -------------------------------------------------------------
-// The R1 series uses a dedicated model name and the same DeepSeek base URL.
-const DEFAULT_DEEPSEEK_R1_MODEL = "deepseek-r1";
-const DEFAULT_DEEPSEEK_BASE_URL = "https://api.deepseek.com/v1";
 
 /**
- * Create a DeepSeek R1 `LanguageModel` instance wrapped with the
+ * Create a DeepSeek Reasoner `LanguageModel` instance wrapped with the
  * `extractReasoningMiddleware` so that `<think>` sections are removed from the
  * final text while still being available via the `.reasoning` property of the
  * generation result.
  */
-export function createDeepSeekR1Provider(): LanguageModel {
+export function createDeepSeekReasonerProvider(): LanguageModel {
     const apiKey = process.env.DEEPSEEK_API_KEY;
 
     if (!apiKey) {
@@ -25,7 +21,7 @@ export function createDeepSeekR1Provider(): LanguageModel {
         throw new Error("DeepSeek API key is required but not configured");
     }
 
-    const config: DeepSeekR1Config = {
+    const config: DeepSeekReasonerConfig = {
         apiKey,
         model: "deepseek-reasoner",
     };
@@ -47,9 +43,9 @@ export function createDeepSeekR1Provider(): LanguageModel {
 }
 
 /**
- * Metadata describing the DeepSeek R1 model configuration used at runtime.
+ * Metadata describing the DeepSeek Reasoner model configuration used at runtime.
  */
-export function getDeepSeekR1ModelInfo() {
+export function getDeepSeekReasonerModelInfo() {
     return {
         provider: "deepseek-reasoner",
         model: "deepseek-reasoner",
@@ -62,4 +58,4 @@ export function getDeepSeekR1ModelInfo() {
 }
 
 // Alias – keeps naming consistent with other provider exports.
-export const deepSeekR1Provider = createDeepSeekR1Provider;
+export const deepSeekReasonerProvider = createDeepSeekReasonerProvider;

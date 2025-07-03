@@ -2,14 +2,14 @@ import { LanguageModel } from "ai";
 import { createOpenAIProvider, getOpenAIModelInfo } from "./openai";
 import { createDeepSeekProvider, getDeepSeekModelInfo } from "./deepseek";
 import {
-    createDeepSeekR1Provider,
-    getDeepSeekR1ModelInfo,
-} from "./deepseek-r1";
+    createDeepSeekReasonerProvider,
+    getDeepSeekReasonerModelInfo,
+} from "./deepseek-reasoner";
 
 export type AISupportedProvider =
     | "openai"
     | "deepseek"
-    | "deepseek-r1"
+    | "deepseek-reasoner"
     | "default";
 
 export interface AIProviderConfig {
@@ -50,10 +50,10 @@ export function getAIProvider(
                     info: getDeepSeekModelInfo(),
                 };
 
-            case "deepseek-r1":
+            case "deepseek-reasoner":
                 return {
-                    model: createDeepSeekR1Provider(),
-                    info: getDeepSeekR1ModelInfo(),
+                    model: createDeepSeekReasonerProvider(),
+                    info: getDeepSeekReasonerModelInfo(),
                 };
 
             default:
@@ -84,8 +84,8 @@ export function getProviderDefaultModel(
         case "deepseek":
             return process.env.DEEPSEEK_MODEL || "deepseek-chat";
 
-        case "deepseek-r1":
-            return process.env.DEEPSEEK_R1_MODEL || "deepseek-r1";
+        case "deepseek-reasoner":
+            return process.env.DEEPSEEK_REASONER_MODEL || "deepseek-reasoner";
 
         default:
             return "gpt-4o-mini";
@@ -101,7 +101,7 @@ export function listAvailableProviders(): AISupportedProvider[] {
 
     if (process.env.DEEPSEEK_API_KEY) {
         providers.push("deepseek");
-        providers.push("deepseek-r1");
+        providers.push("deepseek-reasoner");
     }
 
     if (providers.length > 0) {
@@ -125,4 +125,4 @@ export function validateProviderConfig(
 
 export { createOpenAIProvider as openAIProvider } from "./openai";
 export { createDeepSeekProvider as deepSeekProvider } from "./deepseek";
-export { createDeepSeekR1Provider as deepSeekR1Provider } from "./deepseek-r1";
+export { createDeepSeekReasonerProvider as deepSeekReasonerProvider } from "./deepseek-reasoner";

@@ -41,9 +41,9 @@ export async function POST(request: NextRequest) {
             return jsonResponse({ error: "DeepSeek API key not configured" }, 500);
         }
 
-        if (provider === "deepseek-r1" && !process.env.DEEPSEEK_API_KEY) {
+        if (provider === "deepseek-reasoner" && !process.env.DEEPSEEK_API_KEY) {
             console.error("DEEPSEEK_API_KEY is not set in environment variables");
-            return jsonResponse({ error: "DeepSeek R1 API key not configured" }, 500);
+            return jsonResponse({ error: "DeepSeek Reasoner API key not configured" }, 500);
         }
 
         const coreMessages = convertToCoreMessages(messages);
