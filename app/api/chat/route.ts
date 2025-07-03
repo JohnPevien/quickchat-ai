@@ -1,31 +1,99 @@
-import OpenAI from "openai";
-import { OpenAIStream, StreamingTextResponse } from "ai";
+import { streamText, convertToCoreMessages } from "ai";
+import { getAIProvider, AISupportedProvider } from "@/lib/ai-providers";
+import { NextRequest } from "next/server";
+
 import { SYSTEM_PROMPT } from "@/config/constants";
 
-const openai = new OpenAI({
-  apiKey: process.env.GROQ_API_KEY || "",
-  baseURL: process.env.GROQ_API_BASE_URL || "https://api.groq.com/openai/v1",
-});
+const CORS_HEADERS = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+};
 
-// IMPORTANT! Set the runtime to edge
+const jsonResponse = (body: Record<string, unknown>, status: number) =>
+    new Response(JSON.stringify(body), {
+        status,
+        headers: {
+            "Content-Type": "application/json",
+            ...CORS_HEADERS,
+        },
+    });
+
 export const runtime = "edge";
 
-export async function POST(req: Request) {
-  let { messages } = await req.json();
+export async function POST(request: NextRequest) {
+    try {
+        const body = await request.json();
+        const { messages, provider = "openai" } = body;
 
-  if (!messages || messages.length === 0) {
-    messages = [{ role: "system", content: SYSTEM_PROMPT }];
-  }
+        if (!messages || !Array.isArray(messages)) {
+            console.error("Invalid messages array provided");
+            return jsonResponse({ error: "Messages array is required" }, 400);
+        }
 
-  // Ask Groq for a streaming chat completion given the prompt
-  const response = await openai.chat.completions.create({
-    model: "mixtral-8x7b-32768",
-    stream: true,
-    messages,
-  });
+        if (provider === "openai" && !process.env.OPENAI_API_KEY) {
+            console.error("OPENAI_API_KEY is not set in environment variables");
+            return jsonResponse({ error: "OpenAI API key not configured" }, 500);
+        }
 
-  // Convert the response into a friendly text-stream
-  const stream = OpenAIStream(response);
-  // Respond with the stream
-  return new StreamingTextResponse(stream);
+        if (provider === "deepseek" && !process.env.DEEPSEEK_API_KEY) {
+            console.error("DEEPSEEK_API_KEY is not set in environment variables");
+            return jsonResponse({ error: "DeepSeek API key not configured" }, 500);
+        }
+
+        const coreMessages = convertToCoreMessages(messages);
+
+        // Configure AI provider dynamically
+        const providerConfig = getAIProvider(provider as AISupportedProvider);
+
+        if (!providerConfig) {
+            console.error(`Unsupported or misconfigured AI provider: ${provider}`);
+            return jsonResponse({ error: `Invalid AI provider: ${provider}` }, 400);
+        }
+
+        // Logging to verify DeepSeek usage
+        console.log(
+            `Using provider: ${providerConfig.info.provider}, model: ${providerConfig.info.model}`
+        );
+
+        if (providerConfig.info.provider === "deepseek") {
+            console.log("DeepSeek provider initialized successfully", {
+                baseURL: providerConfig.info.baseURL,
+            });
+        }
+
+        const result = streamText({
+            model: providerConfig.model,
+            system: SYSTEM_PROMPT,
+            messages: coreMessages,
+            temperature: 0.7,
+            maxTokens: 2048,
+        });
+
+        const streamResponse = result.toDataStreamResponse();
+        return new Response(streamResponse.body, {
+            status: streamResponse.status,
+            headers: {
+                ...streamResponse.headers,
+                ...CORS_HEADERS,
+            },
+        });
+    } catch (error) {
+        console.error("Chat API Error:", error);
+
+        return jsonResponse(
+            {
+                error: "Internal server error",
+                details: error instanceof Error ? error.message : String(error),
+            },
+            500
+        );
+    }
+}
+
+export async function OPTIONS() {
+    return new Response(null, {
+        status: 200,
+        headers: CORS_HEADERS,
+    });
 }

@@ -11,7 +11,12 @@ export default function Button({
 }: Props) {
   return (
     <button
-      className="btn w-full dark:text-white dark:bg-blue-700 bg-blue-500 p-2 text-white"
+      className="
+        w-full px-4 py-2 bg-primary text-primary-foreground 
+        hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed
+        rounded-md font-medium text-sm transition-colors
+        focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background
+      "
       onClick={onClick}
       disabled={disabled}
       {...rest}
