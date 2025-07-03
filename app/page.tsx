@@ -57,23 +57,14 @@ export default function Chat() {
                             )}
                             {description && <p>{description}</p>}
                         </header>{" "}
-                        <div className="flex gap-4 mb-8">
-                            <button
-                                onClick={() =>
-                                    setTheme(
-                                        theme === "dark" ? "light" : "dark"
-                                    )
-                                }
-                                className="px-4 py-2 bg-primary text-primary-foreground hover:bg-primary/90 rounded-md transition-colors text-sm font-medium"
-                            >
-                                Toggle Theme
-                            </button>
-
+                        <div className="flex gap-4 mb-8 items-center justify-center">
+                            <label htmlFor="provider">Provider:</label>
                             <Select
                                 value={selectedProvider}
                                 onChange={(e) =>
                                     setSelectedProvider(e.target.value)
                                 }
+                                id="provider"
                                 options={["openai", "deepseek"]}
                                 className="min-w-32"
                             />

@@ -1,17 +1,19 @@
 import React, { useState } from "react";
 type Props = React.InputHTMLAttributes<HTMLSelectElement> & {
-  className?: string;
-  options: string[];
+    className?: string;
+    options: string[];
 };
-export default function TextField({
-  className = "",
-  onChange,
-  options,
-  value,
+export default function Select({
+    className = "",
+    onChange,
+    options,
+    value,
+    ...props
 }: Props) {
-  return (
-    <select
-      className={`
+    return (
+        <select
+            {...props}
+            className={`
         bg-background border border-border text-foreground
         rounded-md px-3 py-2 text-sm
         focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background
@@ -19,17 +21,21 @@ export default function TextField({
         transition-colors
         ${className}
       `}
-      onChange={onChange}
-      value={value}
-    >
-      <option disabled value="">
-        Select an option
-      </option>
-      {options.map((option, index) => (
-        <option value={option} key={index} className="bg-background text-foreground">
-          {option.charAt(0).toUpperCase() + option.slice(1)}
-        </option>
-      ))}
-    </select>
-  );
+            onChange={onChange}
+            value={value}
+        >
+            <option disabled value="">
+                Select an option
+            </option>
+            {options.map((option, index) => (
+                <option
+                    value={option}
+                    key={index}
+                    className="bg-background text-foreground"
+                >
+                    {option.charAt(0).toUpperCase() + option.slice(1)}
+                </option>
+            ))}
+        </select>
+    );
 }
