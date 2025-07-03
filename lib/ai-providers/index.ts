@@ -1,8 +1,16 @@
 import { LanguageModel } from "ai";
 import { createOpenAIProvider, getOpenAIModelInfo } from "./openai";
 import { createDeepSeekProvider, getDeepSeekModelInfo } from "./deepseek";
+import {
+    createDeepSeekR1Provider,
+    getDeepSeekR1ModelInfo,
+} from "./deepseek-r1";
 
-export type AISupportedProvider = "openai" | "deepseek" | "default";
+export type AISupportedProvider =
+    | "openai"
+    | "deepseek"
+    | "deepseek-r1"
+    | "default";
 
 export interface AIProviderConfig {
     model: LanguageModel;
@@ -42,6 +50,12 @@ export function getAIProvider(
                     info: getDeepSeekModelInfo(),
                 };
 
+            case "deepseek-r1":
+                return {
+                    model: createDeepSeekR1Provider(),
+                    info: getDeepSeekR1ModelInfo(),
+                };
+
             default:
                 console.error(`Unsupported AI provider: ${providerName}`);
                 return null;
@@ -70,6 +84,9 @@ export function getProviderDefaultModel(
         case "deepseek":
             return process.env.DEEPSEEK_MODEL || "deepseek-chat";
 
+        case "deepseek-r1":
+            return process.env.DEEPSEEK_R1_MODEL || "deepseek-r1";
+
         default:
             return "gpt-4o-mini";
     }
@@ -84,6 +101,7 @@ export function listAvailableProviders(): AISupportedProvider[] {
 
     if (process.env.DEEPSEEK_API_KEY) {
         providers.push("deepseek");
+        providers.push("deepseek-r1");
     }
 
     if (providers.length > 0) {
@@ -107,3 +125,4 @@ export function validateProviderConfig(
 
 export { createOpenAIProvider as openAIProvider } from "./openai";
 export { createDeepSeekProvider as deepSeekProvider } from "./deepseek";
+export { createDeepSeekR1Provider as deepSeekR1Provider } from "./deepseek-r1";
