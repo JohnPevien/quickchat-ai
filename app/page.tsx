@@ -6,6 +6,11 @@ import Head from "next/head";
 import { Button, TextField, Select } from "@/components/form";
 import { PAGE_TITLE, PAGE_DESCRIPTION } from "@/config/constants";
 import { useTheme } from "next-themes";
+import ReactMarkdown from "react-markdown";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
+import rehypeRaw from "rehype-raw";
+import "katex/dist/katex.min.css";
 
 export default function Chat() {
     const [selectedProvider, setSelectedProvider] = useState<string>("openai");
@@ -99,9 +104,17 @@ export default function Chat() {
                                                     ? "User: "
                                                     : "AI: "}
                                             </span>
-                                            <span className="text-foreground">
-                                                {m.content}
-                                            </span>
+                                            <div className="prose lg:prose-xl dark:prose-invert">
+                                                <ReactMarkdown
+                                                    remarkPlugins={[remarkMath]}
+                                                    rehypePlugins={[
+                                                        rehypeKatex,
+                                                        rehypeRaw,
+                                                    ]}
+                                                >
+                                                    {m.content}
+                                                </ReactMarkdown>
+                                            </div>
                                         </div>
                                     ))}
                                 </>
