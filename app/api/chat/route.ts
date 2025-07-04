@@ -41,6 +41,11 @@ export async function POST(request: NextRequest) {
             return jsonResponse({ error: "DeepSeek API key not configured" }, 500);
         }
 
+        if (provider === "deepseek-reasoner" && !process.env.DEEPSEEK_API_KEY) {
+            console.error("DEEPSEEK_API_KEY is not set in environment variables");
+            return jsonResponse({ error: "DeepSeek Reasoner API key not configured" }, 500);
+        }
+
         const coreMessages = convertToCoreMessages(messages);
 
         // Configure AI provider dynamically
@@ -49,17 +54,6 @@ export async function POST(request: NextRequest) {
         if (!providerConfig) {
             console.error(`Unsupported or misconfigured AI provider: ${provider}`);
             return jsonResponse({ error: `Invalid AI provider: ${provider}` }, 400);
-        }
-
-        // Logging to verify DeepSeek usage
-        console.log(
-            `Using provider: ${providerConfig.info.provider}, model: ${providerConfig.info.model}`
-        );
-
-        if (providerConfig.info.provider === "deepseek") {
-            console.log("DeepSeek provider initialized successfully", {
-                baseURL: providerConfig.info.baseURL,
-            });
         }
 
         const result = streamText({
