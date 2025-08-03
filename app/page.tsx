@@ -56,7 +56,11 @@ export default function Chat() {
                                     setSelectedProvider(e.target.value)
                                 }
                                 id="provider"
-                                options={["openai", "deepseek", "deepseek-reasoner"]}
+                                options={[
+                                    "openai",
+                                    "deepseek",
+                                    "deepseek-reasoner",
+                                ]}
                                 className="min-w-32"
                             />
                         </div>

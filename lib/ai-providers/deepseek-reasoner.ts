@@ -1,11 +1,14 @@
 import { createDeepSeek } from "@ai-sdk/deepseek";
-import { extractReasoningMiddleware, wrapLanguageModel, LanguageModel } from "ai";
+import {
+    extractReasoningMiddleware,
+    wrapLanguageModel,
+    LanguageModel,
+} from "ai";
 
 interface DeepSeekReasonerConfig {
     apiKey: string;
     model: string;
 }
-
 
 /**
  * Create a DeepSeek Reasoner `LanguageModel` instance wrapped with the
