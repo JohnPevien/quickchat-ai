@@ -33,17 +33,30 @@ export async function POST(request: NextRequest) {
 
         if (provider === "openai" && !process.env.OPENAI_API_KEY) {
             console.error("OPENAI_API_KEY is not set in environment variables");
-            return jsonResponse({ error: "OpenAI API key not configured" }, 500);
+            return jsonResponse(
+                { error: "OpenAI API key not configured" },
+                500,
+            );
         }
 
         if (provider === "deepseek" && !process.env.DEEPSEEK_API_KEY) {
-            console.error("DEEPSEEK_API_KEY is not set in environment variables");
-            return jsonResponse({ error: "DeepSeek API key not configured" }, 500);
+            console.error(
+                "DEEPSEEK_API_KEY is not set in environment variables",
+            );
+            return jsonResponse(
+                { error: "DeepSeek API key not configured" },
+                500,
+            );
         }
 
         if (provider === "deepseek-reasoner" && !process.env.DEEPSEEK_API_KEY) {
-            console.error("DEEPSEEK_API_KEY is not set in environment variables");
-            return jsonResponse({ error: "DeepSeek Reasoner API key not configured" }, 500);
+            console.error(
+                "DEEPSEEK_API_KEY is not set in environment variables",
+            );
+            return jsonResponse(
+                { error: "DeepSeek Reasoner API key not configured" },
+                500,
+            );
         }
 
         const coreMessages = convertToCoreMessages(messages);
@@ -52,8 +65,13 @@ export async function POST(request: NextRequest) {
         const providerConfig = getAIProvider(provider as AISupportedProvider);
 
         if (!providerConfig) {
-            console.error(`Unsupported or misconfigured AI provider: ${provider}`);
-            return jsonResponse({ error: `Invalid AI provider: ${provider}` }, 400);
+            console.error(
+                `Unsupported or misconfigured AI provider: ${provider}`,
+            );
+            return jsonResponse(
+                { error: `Invalid AI provider: ${provider}` },
+                400,
+            );
         }
 
         const result = streamText({
@@ -80,7 +98,7 @@ export async function POST(request: NextRequest) {
                 error: "Internal server error",
                 details: error instanceof Error ? error.message : String(error),
             },
-            500
+            500,
         );
     }
 }

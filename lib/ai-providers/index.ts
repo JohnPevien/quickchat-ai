@@ -26,12 +26,13 @@ export interface AIProviderConfig {
 }
 
 export function getAIProvider(
-    providerName: AISupportedProvider = "default"
+    providerName: AISupportedProvider = "default",
 ): AIProviderConfig | null {
     try {
         if (providerName === "default") {
             const defaultProvider =
-                (process.env.NEXT_PUBLIC_DEFAULT_AI_PROVIDER as AISupportedProvider) ||
+                (process.env
+                    .NEXT_PUBLIC_DEFAULT_AI_PROVIDER as AISupportedProvider) ||
                 "openai";
 
             return getAIProvider(defaultProvider);
@@ -67,11 +68,12 @@ export function getAIProvider(
 }
 
 export function getProviderDefaultModel(
-    providerName: AISupportedProvider = "default"
+    providerName: AISupportedProvider = "default",
 ): string {
     if (providerName === "default") {
         const defaultProvider =
-            (process.env.NEXT_PUBLIC_DEFAULT_AI_PROVIDER as AISupportedProvider) ||
+            (process.env
+                .NEXT_PUBLIC_DEFAULT_AI_PROVIDER as AISupportedProvider) ||
             "openai";
 
         return getProviderDefaultModel(defaultProvider);
@@ -112,7 +114,7 @@ export function listAvailableProviders(): AISupportedProvider[] {
 }
 
 export function validateProviderConfig(
-    providerName: AISupportedProvider
+    providerName: AISupportedProvider,
 ): boolean {
     try {
         const config = getAIProvider(providerName);

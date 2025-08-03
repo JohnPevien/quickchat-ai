@@ -1,6 +1,5 @@
 // Application display configuration
-export const PAGE_TITLE =
-    process.env.NEXT_PUBLIC_PAGE_TITLE ?? "QuickChat AI";
+export const PAGE_TITLE = process.env.NEXT_PUBLIC_PAGE_TITLE ?? "QuickChat AI";
 export const PAGE_DESCRIPTION =
     process.env.NEXT_PUBLIC_PAGE_DESCRIPTION ?? "AI Chat Application";
 
@@ -36,17 +35,19 @@ export function validateEnvironment() {
     // Check for at least one AI provider
     if (!process.env.OPENAI_API_KEY && !process.env.DEEPSEEK_API_KEY) {
         requiredVars.push(
-            "At least one AI provider API key (OPENAI_API_KEY or DEEPSEEK_API_KEY)"
+            "At least one AI provider API key (OPENAI_API_KEY or DEEPSEEK_API_KEY)",
         );
     }
 
     // Validate default provider setting
     if (
         process.env.NEXT_PUBLIC_DEFAULT_AI_PROVIDER &&
-        !["openai", "deepseek"].includes(process.env.NEXT_PUBLIC_DEFAULT_AI_PROVIDER)
+        !["openai", "deepseek"].includes(
+            process.env.NEXT_PUBLIC_DEFAULT_AI_PROVIDER,
+        )
     ) {
         warnings.push(
-            `Invalid DEFAULT_AI_PROVIDER: ${process.env.NEXT_PUBLIC_DEFAULT_AI_PROVIDER}. Should be 'openai' or 'deepseek'.`
+            `Invalid DEFAULT_AI_PROVIDER: ${process.env.NEXT_PUBLIC_DEFAULT_AI_PROVIDER}. Should be 'openai' or 'deepseek'.`,
         );
     }
 

@@ -37,7 +37,6 @@ export function createOpenAIProvider(): LanguageModel {
     });
 
     return openai(config.model);
-
 }
 
 export function getOpenAIModelInfo() {

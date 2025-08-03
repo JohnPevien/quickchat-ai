@@ -3,6 +3,7 @@
 **QuikChat** is a simple interface for interacting with AI APIs. It provides easy integration and communication with various AI models
 
 ## Work in Progress
+
 - [ ] Dark mode
 - [ ] Handle other AI models
 - [ ] List AI models available once API key is added
