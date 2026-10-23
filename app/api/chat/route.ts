@@ -4,18 +4,17 @@ import { NextRequest } from "next/server";
 
 import { SYSTEM_PROMPT } from "@/config/constants";
 
-const CORS_HEADERS = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type, Authorization",
-};
+import {
+    checkMessagesSize,
+    checkRateLimit,
+    checkSameOrigin,
+} from "@/lib/request-guard";
 
 const jsonResponse = (body: Record<string, unknown>, status: number) =>
     new Response(JSON.stringify(body), {
         status,
         headers: {
             "Content-Type": "application/json",
-            ...CORS_HEADERS,
         },
     });
 
@@ -23,6 +22,12 @@ export const runtime = "edge";
 
 export async function POST(request: NextRequest) {
     try {
+        const originError = checkSameOrigin(request);
+        if (originError) return originError;
+
+        const rateLimited = checkRateLimit(request);
+        if (rateLimited) return rateLimited;
+
         const body = await request.json();
         const { messages, provider = "openai" } = body;
 
@@ -30,6 +35,9 @@ export async function POST(request: NextRequest) {
             console.error("Invalid messages array provided");
             return jsonResponse({ error: "Messages array is required" }, 400);
         }
+
+        const sizeError = checkMessagesSize(messages);
+        if (sizeError) return sizeError;
 
         if (provider === "openai" && !process.env.OPENAI_API_KEY) {
             console.error("OPENAI_API_KEY is not set in environment variables");
@@ -85,27 +93,12 @@ export async function POST(request: NextRequest) {
         const streamResponse = result.toDataStreamResponse();
         return new Response(streamResponse.body, {
             status: streamResponse.status,
-            headers: {
-                ...streamResponse.headers,
-                ...CORS_HEADERS,
-            },
+            headers: streamResponse.headers,
         });
     } catch (error) {
         console.error("Chat API Error:", error);
 
-        return jsonResponse(
-            {
-                error: "Internal server error",
-                details: error instanceof Error ? error.message : String(error),
-            },
-            500,
-        );
+        return jsonResponse({ error: "Internal server error" }, 500);
     }
 }
 
-export async function OPTIONS() {
-    return new Response(null, {
-        status: 200,
-        headers: CORS_HEADERS,
-    });
-}

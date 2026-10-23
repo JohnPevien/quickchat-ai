@@ -9,7 +9,6 @@ import { useTheme } from "next-themes";
 import ReactMarkdown from "react-markdown";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
-import rehypeRaw from "rehype-raw";
 import "katex/dist/katex.min.css";
 
 export default function Chat() {
@@ -111,10 +110,7 @@ export default function Chat() {
                                             <div className="prose lg:prose-xl dark:prose-invert">
                                                 <ReactMarkdown
                                                     remarkPlugins={[remarkMath]}
-                                                    rehypePlugins={[
-                                                        rehypeKatex,
-                                                        rehypeRaw,
-                                                    ]}
+                                                    rehypePlugins={[rehypeKatex]}
                                                 >
                                                     {m.content}
                                                 </ReactMarkdown>
